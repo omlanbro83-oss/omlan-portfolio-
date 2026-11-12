@@ -1127,7 +1127,7 @@ if (contactForm) {
       alert('Email sending is not configured yet. Please add your EmailJS Service ID, Template ID and Public Key.');
       return;
     }
-    emailjs.sendForm(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_ID, contactForm)
+    emailjs.sendForm(window.service_cbqndco, window.template_g5sfmwn, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
