@@ -1115,31 +1115,55 @@ if (nextBtn && prevBtn && track) {
     updateSlider();
   });
 }
-// Contact Form - EmailJS
+// EmailJS settings
+const EMAILJS_PUBLIC_KEY = 'C5azp32oy6YxdqDps';
+const EMAILJS_SERVICE_ID = 'service_cbqndco';
+const EMAILJS_TEMPLATE_ID = 'template_3wstrwqs';
+
+// Contact form
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
+const submitButton = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
+
+if (typeof emailjs !== 'undefined') {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
 if (contactForm) {
   contactForm.addEventListener('submit', function (event) {
     event.preventDefault();
-    // Add your real EmailJS service/template/public key values before enabling sending.
-   if (typeof emailjs === 'undefined' || !window.EMAILJS_SERVICE_ID || !window.EMAILJS_TEMPLATE_ID) {
-      alert('Email sending is not configured yet. Please add your EmailJS Service ID, Template ID and Public Key.');
+
+    if (typeof emailjs === 'undefined') {
+      alert('Email service failed to load. Please check your connection and try again.');
       return;
     }
-    emailjs.sendForm(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_ID, contactForm)
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
+
+    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
+        alert('Your message has been sent. Thank you!');
       })
       .catch(function (error) {
         console.error('EmailJS error:', error);
         alert('Message could not be sent. Please try again.');
+      })
+      .finally(function () {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Send Message';
+        }
       });
   });
 }
 
-// Smooth anchor scrolling (single handler)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// Smooth anchor scrolling
+document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
   anchor.addEventListener('click', function (event) {
     const href = this.getAttribute('href');
     if (!href || href === '#') return;
@@ -1147,31 +1171,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (target) {
       event.preventDefault();
       const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
+      window.scrollTo({ top: top, behavior: 'smooth' });
     }
   });
 });
 
-// Keep the loading screen from covering the page
+// Hide the loading screen
 function hideLoader() {
   const loader = document.getElementById('loader');
   if (loader) loader.classList.add('hidden');
 }
 window.addEventListener('load', hideLoader);
-setTimeout(hideLoader, 3000);
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-<script>
-function hideLoader() {
-  const loader = document.getElementById('loader');
-
-  if (loader) {
-    loader.classList.add('hidden');
-  }
-}
-
-window.addEventListener('load', hideLoader);
 setTimeout(hideLoader, 3000);</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="contact.js"></script> 
 </body>
 </html>
