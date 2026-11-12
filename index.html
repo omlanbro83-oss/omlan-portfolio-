@@ -1115,18 +1115,18 @@ if (nextBtn && prevBtn && track) {
     updateSlider();
   });
 }
-
 // Contact Form - EmailJS
-<script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js">
-</script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init({
-        publicKey: "C5azp32oy6YxdqDps",
-      });
-   })
-();script>
+const contactForm = document.getElementById('contactForm');
+const formSuccess = document.getElementById('formSuccess');
+if (contactForm) {
+  contactForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    // Add your real EmailJS service/template/public key values before enabling sending.
+   if (typeof emailjs === 'undefined' || !window.EMAILJS_SERVICE_ID || !window.EMAILJS_TEMPLATE_ID) {
+      alert('Email sending is not configured yet. Please add your EmailJS Service ID, Template ID and Public Key.');
+      return;
+    }
+    emailjs.sendForm(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_ID, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
