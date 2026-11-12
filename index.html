@@ -1116,30 +1116,18 @@ if (nextBtn && prevBtn && track) {
   });
 }
 
-// EmailJS configuration
- <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-const EMAILJS_SERVICE_ID = 'service_cbqndco';
-const EMAILJS_TEMPLATE_ID = 'template_3wstrwqs';
-const EMAILJS_PUBLIC_KEY = 'C5azp32oy6YxdqDps';
-
+// Contact Form - EmailJS
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
-
-if (typeof emailjs !== 'undefined') {
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-}
-
 if (contactForm) {
   contactForm.addEventListener('submit', function (event) {
     event.preventDefault();
-
-    if (typeof emailjs === 'undefined') {
-      alert('Email service failed to load. Please check your connection and try again.');
+    // Add your real EmailJS service/template/public key values before enabling sending.
+    if (typeof emailjs === 'undefined' || !window.EMAILJS_SERVICE_ID || !window.EMAILJS_TEMPLATE_ID) {
+      alert('Email sending is not configured yet. Please add your EmailJS Service ID, Template ID and Public Key.');
       return;
     }
-
-    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm)
+    emailjs.sendForm(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_ID, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
@@ -1150,8 +1138,7 @@ if (contactForm) {
       });
   });
 }
-</script>);
-}
+
 // Smooth anchor scrolling (single handler)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (event) {
