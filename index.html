@@ -1116,18 +1116,29 @@ if (nextBtn && prevBtn && track) {
   });
 }
 
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_cbqndco';
+const EMAILJS_TEMPLATE_ID = 'template_3wstrwqs';
+const EMAILJS_PUBLIC_KEY = 'C5azp32oy6YxdqDps';
+
 // Contact Form - EmailJS
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
+
+if (typeof emailjs !== 'undefined') {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
 if (contactForm) {
   contactForm.addEventListener('submit', function (event) {
     event.preventDefault();
-    // Add your real EmailJS service/template/public key values before enabling sending.
-    if (typeof emailjs === 'undefined' || !window.EMAILJS_SERVICE_ID || !window.EMAILJS_TEMPLATE_ID) {
-      alert('Email sending is not configured yet. Please add your EmailJS Service ID, Template ID and Public Key.');
+
+    if (typeof emailjs === 'undefined') {
+      alert('Email service failed to load. Please check your connection and try again.');
       return;
     }
-    emailjs.sendForm(window.service_cbqndco, window.template_g5sfmwn, window.C5azp32oy6YxdqDps, contactForm)
+
+    emailjs.sendForm(service_cbqndco, template_3wstrwqs, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
@@ -1138,7 +1149,6 @@ if (contactForm) {
       });
   });
 }
-
 // Smooth anchor scrolling (single handler)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (event) {
