@@ -1118,13 +1118,11 @@ if (nextBtn && prevBtn && track) {
 
 // EmailJS configuration
  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="your-contact-script.js"></script> 
-<script
+<script>
 const EMAILJS_SERVICE_ID = 'service_cbqndco';
 const EMAILJS_TEMPLATE_ID = 'template_3wstrwqs';
 const EMAILJS_PUBLIC_KEY = 'C5azp32oy6YxdqDps';
 
-// Contact Form - EmailJS
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
@@ -1141,7 +1139,7 @@ if (contactForm) {
       return;
     }
 
-    emailjs.sendForm(service_cbqndco, template_3wstrwqs, contactForm)
+    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm)
       .then(function () {
         if (formSuccess) formSuccess.classList.remove('hidden');
         contactForm.reset();
@@ -1151,6 +1149,8 @@ if (contactForm) {
         alert('Message could not be sent. Please try again.');
       });
   });
+}
+</script>);
 }
 // Smooth anchor scrolling (single handler)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
