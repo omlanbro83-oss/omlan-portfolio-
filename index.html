@@ -791,39 +791,63 @@ tailwind.config = {
       <!-- Form -->
       <div class="reveal">
         <form id="contactForm" class="space-y-5">
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label class="text-sm font-semibold text-gray-700 mb-2 block">Your Name</label>
-              <input type="text" required class="w-full px-5 py-4 rounded-2xl bg-white border border-gray-200 focus:border-royal-500 focus:ring-4 focus:ring-royal-100 outline-none transition" placeholder="John Doe">
-            </div>
-            <div>
-              <label class="text-sm font-semibold text-gray-700 mb-2 block">Email</label>
-              <input type="email" required class="w-full px-5 py-4 rounded-2xl bg-white border border-gray-200 focus:border-royal-500 focus:ring-4 focus:ring-royal-100 outline-none transition" placeholder="you@email.com">
-            </div>
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-gray-700 mb-2 block">Project Type</label>
-            <select class="w-full px-5 py-4 rounded-2xl bg-white border border-gray-200 focus:border-royal-500 focus:ring-4 focus:ring-royal-100 outline-none transition">
-              <option>Motion Graphics</option>
-              <option>Video Editing</option>
-              <option>Social Media Ad</option>
-              <option>Branding Video</option>
-              <option>YouTube Content</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-gray-700 mb-2 block">Your Message</label>
-            <textarea rows="5" required class="w-full px-5 py-4 rounded-2xl bg-white border border-gray-200 focus:border-royal-500 focus:ring-4 focus:ring-royal-100 outline-none transition resize-none" placeholder="Tell me about your project..."></textarea>
-          </div>
-          <button type="submit" class="btn-glow w-full bg-royal-700 text-white px-8 py-4 rounded-2xl font-semibold inline-flex items-center justify-center gap-2">
-            Send Message
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-          </button>
-          <div id="formSuccess" class="hidden p-4 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-medium text-center">
-            ✓ Thank you! Your message has been sent successfully.
-          </div>
-        </form>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label>Your Name</label>
+      <input
+        type="text"
+        name="name"
+        required
+        class="..."
+        placeholder="John Doe"
+      >
+    </div>
+
+    <div>
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        required
+        class="..."
+        placeholder="you@email.com"
+      >
+    </div>
+  </div>
+
+  <div>
+    <label>Project Type</label>
+    <select name="title" required class="...">
+      <option value="Motion Graphics">Motion Graphics</option>
+      <option value="Video Editing">Video Editing</option>
+      <option value="Social Media Ad">Social Media Ad</option>
+      <option value="Branding Video">Branding Video</option>
+      <option value="YouTube Content">YouTube Content</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Your Message</label>
+    <textarea
+      name="message"
+      rows="5"
+      required
+      class="..."
+      placeholder="Tell me about your project..."
+    ></textarea>
+  </div>
+
+  <button type="submit" class="...">
+    Send Message
+  </button>
+
+  <div id="formSuccess" class="hidden ...">
+    ✓ Thank you! Your message has been sent successfully.
+  </div>
+
+</form>
       </div>
       
       <!-- Info -->
@@ -1085,53 +1109,68 @@ if (nextBtn && prevBtn && track) {
 }
 
 // Contact Form - EmailJS
-const form = document.getElementById('contactForm');
-const success = document.getElementById('formSuccess');
+const form = document.getElementById("contactForm");
+const success = document.getElementById("formSuccess");
 
-if (form && typeof emailjs !== 'undefined') {
-  emailjs.init({
-    publicKey: "C5azp32oy6YxdqDps"
-  });
+if (form) {
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  if (typeof emailjs === "undefined") {
+    console.error("EmailJS SDK is not loaded.");
+  } else {
 
-    const button = form.querySelector('button[type="submit"]');
-
-    if (!button) return;
-
-    const originalText = button.textContent;
-
-    button.disabled = true;
-    button.textContent = "Sending...";
-
-    emailjs.sendForm(
-      "service_cbqndco",
-      "template_g5sfmwn",
-      form
-    )
-    .then(() => {
-      if (success) {
-        success.classList.remove('hidden');
-
-        setTimeout(() => {
-          success.classList.add('hidden');
-        }, 4000);
-      }
-
-      form.reset();
-    })
-    .catch((error) => {
-      console.error("EmailJS Error:", error);
-      alert("Message could not be sent. Please try again.");
-    })
-    .finally(() => {
-      button.disabled = false;
-      button.textContent = originalText;
+    emailjs.init({
+      publicKey: "C5azp32oy6YxdqDps"
     });
-  });
-}
 
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const button = form.querySelector('button[type="submit"]');
+
+      if (!button) return;
+
+      const originalText = button.textContent;
+
+      button.disabled = true;
+      button.textContent = "Sending...";
+
+      emailjs.sendForm(
+        "service_cbqndco",
+        "template_g5sfmwn",
+        form
+      )
+
+      .then(function (response) {
+
+        console.log("SUCCESS!", response.status, response.text);
+
+        if (success) {
+          success.classList.remove("hidden");
+        }
+
+        form.reset();
+
+      })
+
+      .catch(function (error) {
+
+        console.error("EmailJS Error:", error);
+
+        alert("Message could not be sent. Please try again.");
+
+      })
+
+      .finally(function () {
+
+        button.disabled = false;
+        button.textContent = originalText;
+
+      });
+
+    });
+
+  }
+}
 // Smooth Anchor Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
@@ -1167,5 +1206,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </body>
 </html>
