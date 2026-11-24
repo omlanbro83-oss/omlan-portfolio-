@@ -1112,14 +1112,14 @@ if (contactForm) {
       submitButton.textContent = 'Sending...';
     }
 
-    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm)
+    var formData = new FormData(contactForm); emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { name: formData.get('name'), from_name: formData.get('name'), email: formData.get('email'), from_email: formData.get('email'), reply_to: formData.get('email'), title: formData.get('title'), subject: formData.get('title'), message: formData.get('message') })
       .then(function () {
-        if (formSuccess) formSuccess.classList.remove('hidden');
+        if (formSuccess) { formSuccess.textContent = 'Thank you! Your message has been sent successfully.'; formSuccess.classList.remove('hidden'); }
         contactForm.reset();
         alert('Your message has been sent. Thank you!');
       })
       .catch(function (error) {
-        console.error('EmailJS error:', error);
+        console.error('EmailJS error:', error); if (formSuccess) { formSuccess.textContent = 'EmailJS error: status=' + (error && error.status) + ' text=' + (error && error.text) + ' message=' + (error && error.message); formSuccess.classList.remove('hidden'); } if (formSuccess) { formSuccess.textContent = 'EmailJS error: status=' + (error && error.status) + ' text=' + (error && error.text) + ' message=' + (error && error.message); formSuccess.classList.remove('hidden'); }
         alert('Message could not be sent. Please try again.');
       })
       .finally(function () {
